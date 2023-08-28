@@ -1,64 +1,75 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import EditEventPage from './pages/EditEvent';
-import ErrorPage from './pages/Error';
+import RootLayout from "./ui/RootLayout";
+import HomePage from "./page/HomePage";
+import EventsPage, { loader as eventsLoader } from "./page/EventsPage";
 import EventDetailPage, {
   loader as eventDetailLoader,
-  action as deleteEventAction,
-} from './pages/EventDetail';
-import EventsPage, { loader as eventsLoader } from './pages/Events';
-import EventsRootLayout from './pages/EventsRoot';
-import HomePage from './pages/Home';
-import NewEventPage from './pages/NewEvent';
-import RootLayout from './pages/Root';
-import { action as manipulateEventAction } from './components/EventForm';
-import NewsletterPage, { action as newsletterAction } from './pages/Newsletter';
+  action as eventDetailDeleteAction,
+} from "./page/EventDetailPage";
+import EditEventPage from "./page/EditEventPage";
+import NewEventPage from "./page/NewEventPage";
+import EventsLayout from "./ui/EventsLayout";
+import ErrorDisplay from "./components/ErrorDisplay";
+import NotFound from "./page/NotFound";
+import { action as eventFormAction } from "./components/EventForm";
+import NewsletterPage, {
+  action as newsletterPageAction,
+} from "./page/NewsletterPage";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <RootLayout />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorDisplay />,
     children: [
       { index: true, element: <HomePage /> },
       {
-        path: 'events',
-        element: <EventsRootLayout />,
+        path: "events",
+        element: <EventsLayout />,
         children: [
           {
             index: true,
             element: <EventsPage />,
             loader: eventsLoader,
+            errorElement: <ErrorDisplay />,
           },
           {
-            path: ':eventId',
-            id: 'event-detail',
+            path: ":eventID",
+            id: "event-detail",
             loader: eventDetailLoader,
+            errorElement: <ErrorDisplay />,
             children: [
               {
                 index: true,
                 element: <EventDetailPage />,
-                action: deleteEventAction,
+                action: eventDetailDeleteAction,
+                errorElement: <ErrorDisplay />,
               },
               {
-                path: 'edit',
+                path: "edit",
                 element: <EditEventPage />,
-                action: manipulateEventAction,
+                action: eventFormAction,
+                errorElement: <ErrorDisplay />,
               },
             ],
           },
           {
-            path: 'new',
+            path: "new",
             element: <NewEventPage />,
-            action: manipulateEventAction,
+            action: eventFormAction,
+            errorElement: <ErrorDisplay />,
           },
         ],
       },
       {
-        path: 'newsletter',
+        path: "newsletter",
         element: <NewsletterPage />,
-        action: newsletterAction,
+        action: newsletterPageAction,
+        errorElement: <ErrorDisplay />,
       },
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);
