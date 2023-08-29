@@ -4,9 +4,9 @@ import classes from "./MainNavigation.module.css";
 import NewsletterSignup from "./NewsletterSignup";
 
 function MainNavigation() {
-  const activeStyle = ({isActive}) => {
+  const activeStyle = ({ isActive }) => {
     return isActive ? classes.active : undefined;
-  }
+  };
 
   return (
     <header className={classes.header}>
@@ -25,6 +25,11 @@ function MainNavigation() {
           <li>
             <NavLink to="/newsletter" className={activeStyle}>
               Newsletter
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/auth" className={activeStyle}>
+              Authentication
             </NavLink>
           </li>
         </ul>
