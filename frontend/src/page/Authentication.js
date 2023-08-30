@@ -2,6 +2,7 @@ import React from "react";
 import { json, redirect } from "react-router-dom";
 
 import AuthForm from "../components/AuthForm";
+import { storeAuthToken } from "../utils/auth";
 
 export const action = async ({ request, params }) => {
   const formData = await request.formData();
@@ -32,7 +33,8 @@ export const action = async ({ request, params }) => {
     throw json({ message: "Could not authenticate user." }, { status: 500 });
   }
 
-  // later: manage that token
+  const data = await response.json();
+  storeAuthToken(data.token);
 
   return redirect("/");
 };

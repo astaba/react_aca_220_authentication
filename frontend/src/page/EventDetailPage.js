@@ -10,6 +10,7 @@ import {
 import EventItem from "../components/EventItem";
 import EventsList from "../components/EventsList";
 import { loaderWorker as listLoaderWorker } from "./EventsPage";
+import { getAuthToken } from "../utils/auth";
 
 const loaderWorker = async (eventID) => {
   const response = await fetch(`http://localhost:8080/events/${eventID}`);
@@ -34,8 +35,11 @@ export const loader = async ({ request, params }) => {
 export const action = async ({ request, params }) => {
   const { eventID } = params;
   const url = "http://localhost:8080/events/" + eventID;
+  const headers = new Headers();
+  headers.set("Authorization", "Bearer " + getAuthToken());
   const options = {
     method: request.method,
+    headers,
   };
   const goingRequest = new Request(url, options);
 

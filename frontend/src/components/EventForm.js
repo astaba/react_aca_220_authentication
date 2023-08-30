@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 
 import classes from "./EventForm.module.css";
+import { getAuthToken } from "../utils/auth";
 
 export const action = async ({ request, params }) => {
   const { eventID } = params;
@@ -22,15 +23,17 @@ export const action = async ({ request, params }) => {
 
   let url = "http://localhost:8080/events/";
   if (request.method === "PATCH") url += eventID;
-  const headers = new Headers({ "Content-Type": "application/json" });
+  const headers = new Headers();
+  headers.set("Content-Type", "application/json");
+  headers.set("Authorization", "Bearer " + getAuthToken());
   const options = {
     method: request.method,
     headers,
     body: JSON.stringify(eventData),
   };
-  const goingRequest = new Request(url, options);
+  const requesting = new Request(url, options);
 
-  const response = await fetch(goingRequest);
+  const response = await fetch(requesting);
 
   if (response.status === 422) {
     return response;
