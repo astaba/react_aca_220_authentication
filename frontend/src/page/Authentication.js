@@ -13,7 +13,7 @@ export const action = async ({ request, params }) => {
   if (!["login", "signup"].includes(mode)) {
     throw json(
       { message: "Unexpected mode in query parameter" },
-      { status: 422 }
+      { status: 422, statusText: "Unprocessable Entity" }
     );
   }
   const url = new URL("http://localhost:8080/" + mode);
