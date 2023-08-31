@@ -1,11 +1,10 @@
-import { NavLink, useLoaderData, useSubmit } from "react-router-dom";
+import { NavLink, useSubmit } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import NewsletterSignup from "./NewsletterSignup";
 
-function MainNavigation() {
+function MainNavigation({ token }) {
   const submit = useSubmit();
-  const { token } = useLoaderData();
 
   const activeStyle = ({ isActive }) => {
     return isActive ? classes.active : undefined;

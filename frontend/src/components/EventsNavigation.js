@@ -1,10 +1,10 @@
 import React from "react";
-import { NavLink, useRouteLoaderData } from "react-router-dom";
+import { NavLink, useOutletContext } from "react-router-dom";
 
 import classes from "./EventsNavigation.module.css";
 
 function EventsNavigation() {
-  const { token } = useRouteLoaderData("root-route");
+  const { token } = useOutletContext();
 
   const activeStyle = ({ isActive }) => {
     return isActive ? classes.active : undefined;

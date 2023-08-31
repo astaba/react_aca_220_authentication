@@ -1,17 +1,19 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React from "react";
+import { Outlet, useLoaderData } from "react-router-dom";
 
-import MainNavigation from '../components/MainNavigation'
+import MainNavigation from "../components/MainNavigation";
 
 const RootLayout = () => {
+  const { token } = useLoaderData();
+
   return (
     <React.Fragment>
-      <MainNavigation />
+      <MainNavigation token={token} />
       <main>
-        <Outlet />
+        <Outlet context={{ token }} />
       </main>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default RootLayout
+export default RootLayout;
