@@ -1,11 +1,11 @@
-import { NavLink, useSubmit } from "react-router-dom";
+import { NavLink, useLoaderData, useSubmit } from "react-router-dom";
 
 import classes from "./MainNavigation.module.css";
 import NewsletterSignup from "./NewsletterSignup";
-import { getAuthToken } from "../utils/auth";
 
 function MainNavigation() {
   const submit = useSubmit();
+  const { token } = useLoaderData();
 
   const activeStyle = ({ isActive }) => {
     return isActive ? classes.active : undefined;
@@ -14,8 +14,6 @@ function MainNavigation() {
   const handleLogout = () => {
     submit(null, { method: "POST", action: "/logout" });
   };
-
-  const isToken = getAuthToken();
 
   return (
     <header className={classes.header}>
@@ -36,7 +34,7 @@ function MainNavigation() {
               Newsletter
             </NavLink>
           </li>
-          {!isToken ? (
+          {!token ? (
             <li>
               <NavLink to="/auth?mode=login" className={activeStyle}>
                 Authentication

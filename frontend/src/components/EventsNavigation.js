@@ -1,15 +1,14 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useRouteLoaderData } from "react-router-dom";
 
 import classes from "./EventsNavigation.module.css";
-import { getAuthToken } from "../utils/auth";
 
 function EventsNavigation() {
+  const { token } = useRouteLoaderData("root-route");
+
   const activeStyle = ({ isActive }) => {
     return isActive ? classes.active : undefined;
   };
-
-  const isToken = getAuthToken();
 
   return (
     <header className={classes.header}>
@@ -20,7 +19,7 @@ function EventsNavigation() {
               All Events
             </NavLink>
           </li>
-          {isToken && (
+          {token && (
             <li>
               <NavLink to="new" className={activeStyle}>
                 New Event

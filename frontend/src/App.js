@@ -21,11 +21,14 @@ import AuthenticationPage, {
   action as authPageAction,
 } from "./page/Authentication";
 import { logoutAction } from "./utils/actions";
+import { getAuthToken } from "./utils/auth";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    id: "root-route",
+    loader: () => ({ token: getAuthToken() }),
     errorElement: <ErrorDisplay />,
     children: [
       { index: true, element: <HomePage /> },
