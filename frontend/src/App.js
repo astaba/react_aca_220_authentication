@@ -20,6 +20,7 @@ import NewsletterPage, {
 import AuthenticationPage, {
   action as authPageAction,
 } from "./page/Authentication";
+import { logoutAction } from "./utils/actions";
 
 const router = createBrowserRouter([
   {
@@ -77,6 +78,10 @@ const router = createBrowserRouter([
         element: <AuthenticationPage />,
         action: authPageAction,
         errorElement: <ErrorDisplay />,
+      },
+      {
+        path: "logout",
+        action: logoutAction,
       },
       { path: "*", element: <NotFound /> },
     ],
