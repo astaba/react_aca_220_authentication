@@ -17,11 +17,10 @@ import { action as eventFormAction } from "./components/EventForm";
 import NewsletterPage, {
   action as newsletterPageAction,
 } from "./page/NewsletterPage";
-import AuthenticationPage, {
-  action as authPageAction,
-} from "./page/Authentication";
+import AuthenticationPage from "./page/Authentication";
 import { logoutAction } from "./utils/actions";
 import { getAuthToken } from "./utils/auth";
+import { action as authFormAction } from "./components/AuthForm";
 
 const router = createBrowserRouter([
   {
@@ -79,7 +78,7 @@ const router = createBrowserRouter([
       {
         path: "auth",
         element: <AuthenticationPage />,
-        action: authPageAction,
+        action: authFormAction,
         errorElement: <ErrorDisplay />,
       },
       {
