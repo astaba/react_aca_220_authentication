@@ -19,13 +19,13 @@ function EventsNavigation() {
               All Events
             </NavLink>
           </li>
-          {token && (
+          {/* {token && ( */}
             <li>
               <NavLink to="new" className={activeStyle}>
                 New Event
               </NavLink>
             </li>
-          )}
+          {/* )} */}
         </ul>
       </nav>
     </header>

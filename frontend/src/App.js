@@ -8,8 +8,8 @@ import EventDetailPage, {
   loader as eventDetailLoader,
   action as eventDetailDeleteAction,
 } from "./page/EventDetailPage";
-import EditEventPage from "./page/EditEventPage";
-import NewEventPage from "./page/NewEventPage";
+import EditEventPage, { loader as editEventLoader } from "./page/EditEventPage";
+import NewEventPage, {loader as newEventLoader} from "./page/NewEventPage";
 import EventsLayout from "./ui/EventsLayout";
 import ErrorDisplay from "./components/ErrorDisplay";
 import NotFound from "./page/NotFound";
@@ -56,6 +56,7 @@ const router = createBrowserRouter([
               {
                 path: "edit",
                 element: <EditEventPage />,
+                loader: editEventLoader,
                 action: eventFormAction,
                 errorElement: <ErrorDisplay />,
               },
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
           {
             path: "new",
             element: <NewEventPage />,
+            loader: newEventLoader,
             action: eventFormAction,
             errorElement: <ErrorDisplay />,
           },

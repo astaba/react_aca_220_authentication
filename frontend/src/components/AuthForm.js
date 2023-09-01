@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Form,
-  Link,
   useActionData,
   useNavigation,
   useSearchParams,
@@ -13,26 +12,27 @@ import classes from "./AuthForm.module.css";
 import { storeAuthToken } from "../utils/auth";
 
 export const action = async ({ request, params }) => {
+  const requestingURL = new URL(request.url);
   const formData = await request.formData();
   const authData = {
     email: formData.get("email"),
     password: formData.get("password"),
   };
-  const mode = new URL(request.url).searchParams.get("mode") || "login";
+  const mode = new URL(requestingURL).searchParams.get("mode") || "login";
   if (!["login", "signup"].includes(mode)) {
     throw json(
       { message: "Unexpected mode in query parameter" },
       { status: 422, statusText: "Unprocessable Entity" }
     );
   }
-  const url = new URL("http://localhost:8080/" + mode);
+  const requestedURL = new URL("http://localhost:8080/" + mode);
   const headers = new Headers({ "Content-Type": "application/json" });
   const options = {
     method: "POST",
     headers,
     body: JSON.stringify(authData),
   };
-  const requesting = new Request(url, options);
+  const requesting = new Request(requestedURL, options);
 
   const response = await fetch(requesting);
   if ([422, 401].includes(response.status)) {
@@ -44,22 +44,41 @@ export const action = async ({ request, params }) => {
   const data = await response.json();
   storeAuthToken(data.token);
 
-  return redirect("/");
+  const redirection = requestingURL.searchParams.get("redirection") || "/";
+  return redirect(redirection);
 };
 
 function AuthForm() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const data = useActionData();
-  console.log(data);
+  // console.log(data);
   const { state } = useNavigation();
 
-  const isLogin = searchParams.get("mode") === "login";
+  const handleShiftMode = () => {
+    setSearchParams((prevSearch) => {
+      const newSearch = new URLSearchParams(prevSearch);
+      if (newSearch.get("mode") === "signup") newSearch.set("mode", "login");
+      else newSearch.set("mode", "signup");
+      newSearch.delete("message");
+      return newSearch;
+    });
+  };
+
+  const isLoginMode =
+    !searchParams.has("mode") || searchParams.get("mode") === "login";
   const isSubmitting = state === "submitting";
+
+  const message = searchParams.get("message");
+  const h1Text = (function () {
+    if (message) return message;
+    else if (isLoginMode) return "Log in";
+    return "Create a new user";
+  })();
 
   return (
     <>
-      <Form method="post" className={classes.form}>
-        <h1>{isLogin ? "Log in" : "Create a new user"}</h1>
+      <Form method="post" className={classes.form} replace>
+        <h1>{h1Text}</h1>
         <p>
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" required />
@@ -69,12 +88,13 @@ function AuthForm() {
           <input id="password" type="password" name="password" required />
         </p>
         <div className={classes.actions}>
-          <Link
-            to={`?mode=${isLogin ? "signup" : "login"}`}
-            style={isSubmitting ? { pointerEvents: "none" } : null}
+          <button
+            type="button"
+            onClick={handleShiftMode}
+            disabled={isSubmitting}
           >
-            {isLogin ? "Create new user" : "Login"}
-          </Link>
+            {`Swift mode to ${isLoginMode ? "Sign up" : "Login"}`}
+          </button>
           <button disabled={isSubmitting}>
             {!isSubmitting ? "Save" : "Submitting..."}
           </button>
