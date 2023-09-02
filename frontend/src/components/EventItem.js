@@ -1,10 +1,10 @@
-import { Link, useOutletContext, useSubmit } from "react-router-dom";
+import { Link, useRouteLoaderData, useSubmit } from "react-router-dom";
 
 import classes from "./EventItem.module.css";
 
 function EventItem({ event }) {
   const submit = useSubmit();
-  const { token } = useOutletContext();
+  const { token } = useRouteLoaderData("root-route");
 
   function startDeleteHandler() {
     const isConfirmed = window.confirm("Are you sure?");
