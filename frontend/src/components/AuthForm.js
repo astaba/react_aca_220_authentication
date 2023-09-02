@@ -46,9 +46,9 @@ export const action = async ({ request, params }) => {
   /**
    * Set in milliseconds for how long the authentication token will
    * be valid. In a real case it should be the duration set in the 
-   * backend server
+   * backend server which is 1 hour.
    */
-  setDeadline(5 * 60 * 1000);
+  setDeadline(5 * 30 * 1000);
 
   const redirection = requestingURL.searchParams.get("redirection") || "/";
   return redirect(redirection);

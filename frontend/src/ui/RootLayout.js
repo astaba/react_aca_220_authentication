@@ -14,20 +14,18 @@ const RootLayout = () => {
   const submit = useSubmit();
 
   useEffect(() => {
-    let timer = null;
     const { isExpired, duration } = checkTokenExpiration();
     // console.log(`${isExpired}: ${duration}`);
-    if (!isExpired) {
-      timer = setTimeout(() => {
-        /**
-         * In this case we log out the user, but
-         * here you could trigger what ever you please, like
-         * notifying the user session expiration with drop down
-         * notification.
-         */
-        submit(null, { method: "POST", action: "/logout" });
-      }, duration);
-    }
+    if (isExpired) return;
+    const timer = setTimeout(() => {
+      /**
+       * In this case we log out the user, but
+       * here you could trigger what ever you please, like
+       * notifying the user session expiration with drop down
+       * notification.
+       */
+      submit(null, { method: "POST", action: "/logout" });
+    }, duration);
     return () => {
       clearTimeout(timer);
     };
