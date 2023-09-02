@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import {
   json,
   useRouteLoaderData,
@@ -57,6 +57,12 @@ export const action = async ({ request, params }) => {
 const EventDetailPage = () => {
   const deferedData = useRouteLoaderData("event-detail");
   // console.log(data);
+  useEffect(() => {
+    document.body.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, [deferedData]);
 
   return (
     <React.Fragment>
