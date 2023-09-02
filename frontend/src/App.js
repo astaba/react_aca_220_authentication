@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import RootLayout from "./ui/RootLayout";
+import RootLayout, { loader as rootLayoutLoader } from "./ui/RootLayout";
 import HomePage from "./page/HomePage";
 import EventsPage, { loader as eventsLoader } from "./page/EventsPage";
 import EventDetailPage, {
@@ -19,7 +19,6 @@ import NewsletterPage, {
 } from "./page/NewsletterPage";
 import AuthenticationPage from "./page/Authentication";
 import { logoutAction } from "./utils/actions";
-import { getAuthToken } from "./utils/auth";
 import { action as authFormAction } from "./components/AuthForm";
 
 const router = createBrowserRouter([
@@ -27,7 +26,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     id: "root-route",
-    loader: () => ({ token: getAuthToken() }),
+    loader: rootLayoutLoader,
     errorElement: <ErrorDisplay />,
     children: [
       { index: true, element: <HomePage /> },

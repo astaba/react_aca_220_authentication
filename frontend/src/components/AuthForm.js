@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 import classes from "./AuthForm.module.css";
-import { storeAuthToken } from "../utils/auth";
+import { setDeadline, storeAuthToken } from "../utils/auth";
 
 export const action = async ({ request, params }) => {
   const requestingURL = new URL(request.url);
@@ -43,6 +43,12 @@ export const action = async ({ request, params }) => {
 
   const data = await response.json();
   storeAuthToken(data.token);
+  /**
+   * Set in milliseconds for how long the authentication token will
+   * be valid. In a real case it should be the duration set in the 
+   * backend server
+   */
+  setDeadline(5 * 60 * 1000);
 
   const redirection = requestingURL.searchParams.get("redirection") || "/";
   return redirect(redirection);

@@ -22,3 +22,22 @@ export const requireAuth = (request) => {
   }
   return null;
 };
+
+export const setDeadline = (laps) => {
+  const deadline = new Date();
+  deadline.setMilliseconds(deadline.getMilliseconds() + laps);
+  localStorage.setItem("tokenDeadline", deadline.toISOString());
+};
+
+export const checkTokenExpiration = () => {
+  let duration = 0;
+  let isExpired = true;
+  const tokenDeadline = localStorage.getItem("tokenDeadline");
+  if (!tokenDeadline) return { isExpired, duration };
+  const deadline = new Date(tokenDeadline);
+  const now = new Date();
+  duration = deadline.getTime() - now.getTime();
+  isExpired = duration <= 0;
+  if (isExpired) duration = 0;
+  return { isExpired, duration };
+};
